@@ -1,6 +1,7 @@
 const User = require("../../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+
 const generateToken = (user, next) => {
   try {
     payload = { username: user._id };
@@ -12,7 +13,7 @@ const generateToken = (user, next) => {
   }
 };
 
-exports.signup = async (req, res) => {
+exports.signup = async (req, res, next) => {
   try {
     const saltround = 10;
     const hashPassword = await bcrypt.hash(req.body.password, saltround);
@@ -34,7 +35,7 @@ exports.signin = async (req, res) => {
   }
 };
 
-exports.getUsers = async (req, res) => {
+exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find().populate("urls");
     res.status(201).json(users);
